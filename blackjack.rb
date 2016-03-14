@@ -63,10 +63,7 @@ class BlackJack
 
   def hit?
     print '(h)it or (s)tay?'
-    if gets.downcase.chomp == 'h'
-      player_score
-      true
-    end
+    player_score if gets.downcase.chomp == 'h'
   end
 
   def hit
