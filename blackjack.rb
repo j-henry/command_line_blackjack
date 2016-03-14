@@ -46,6 +46,7 @@ class BlackJack
     end
     self.round_num += 1
     player_wins?
+    shoe = Deck.new.shuffle!
     resolution
   end
 
