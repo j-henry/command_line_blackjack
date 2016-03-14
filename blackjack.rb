@@ -29,7 +29,6 @@ class BlackJack
 
     while player_score < 21
       if hit? # Use a guard clause instead
-        deal(1)
         puts "you drew a #{player_hand.last}. Current points #{player_score}"
       else
         break
@@ -63,7 +62,7 @@ class BlackJack
 
   def hit?
     print '(h)it or (s)tay?'
-    player_score if gets == 'h\n'
+    player_score if gets.downcase.chomp == 'h\n'
   end
 
   def hit
@@ -95,11 +94,12 @@ class BlackJack
   def check_blackjack
     if player_score == 21
       puts 'Player wins with Blackjack'
-      player_victory
+      player_wins?
+      resolution
     elsif dealer_score == 21
       puts 'Dealer wins with Blackjack'
       `say 'Better luck next time'`
-      dealer_victory
+      player_wins?
       resolution
     end
   end
