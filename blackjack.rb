@@ -1,16 +1,18 @@
 require './deck'
 require './card'
 
+# For storing core game logic
+# Handles pathing for round advancing and winning
 class BlackJack
-
                 # core game instance vars
-  attr_accessor :shoe, :dealer_hand, :player_hand, :round_num, :dealer_wins, :player_wins,
+  attr_accessor :shoe, :dealer_hand, :player_hand, :round_num, :dealer_wins,
+                :player_wins,
                 # betting instance variables
                 :betting_box, :player_cash, :player_bet
 
   def initialize
     self.shoe = Deck.new; shoe.card_wave
-    shoe.shuffle!;  shoe.card_wave
+    shoe.shuffle! && shoe.card_wave
     self.player_cash = 100
     self.round_num = 0
     self.dealer_wins = 0
@@ -18,7 +20,7 @@ class BlackJack
   end
 
   def shoe_size
-    puts "How many decks?";
+    puts 'How many decks?'
     return STDIN.gets.chomp.to_i
   end
 
