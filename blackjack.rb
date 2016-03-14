@@ -20,11 +20,6 @@ class BlackJack
     self.player_wins = 0
   end
 
-  def shoe_size
-    puts 'How many decks?'
-    STDIN.gets.chomp.to_i
-  end
-
   def round  # assignment branch size and cyclomatic complexity too high, method has too many lines, complexity too high
     discard
     puts deal(2, 2)
@@ -34,7 +29,7 @@ class BlackJack
 
     while player_score < 21
       if hit? # Use a guard clause instead
-        self.deal(1)
+        deal(1)
         puts "you drew a #{player_hand.last}. Current points #{player_score}"
       else
         break
@@ -60,13 +55,9 @@ class BlackJack
     self.betting_box = 0
   end
 
-  def deal(to_player, to_dealer = 0) # deal(num_to_player, num_to_dealer) # assignment branch condition size is too high
-    while to_player + to_dealer > 0
-      player_hand << shoe.shift if to_player > 0
-      dealer_hand << shoe.shift if to_dealer > 0
-      to_player -= 1 if to_player > 0
-      to_dealer -= 1 if to_dealer > 0
-    end
+  def deal(to_player, to_dealer = 0)
+      to_player.times {player_hand << shoe.shift if to_player > 0}
+      to_dealer.times {dealer_hand << shoe.shift if to_dealer > 0}
     "You have #{player_hand.join(' and ')} (#{player_score})...Dealer shows #{dealer_hand.first}"
   end
 
