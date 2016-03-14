@@ -34,7 +34,7 @@ class BlackJack
 
     while player_score < 21
       if hit? # Use a guard clause instead
-        deal(1)
+        self.deal(1)
         puts "you drew a #{player_hand.last}. Current points #{player_score}"
       else
         break
