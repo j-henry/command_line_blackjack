@@ -15,7 +15,6 @@ class Deck
     shoe_of_cards = []
 
   suits.each do |suit|
-    puts "#{suit}"
       faces.each.with_index do |face, value|
         value += 2
         value = 10 if value > 10
@@ -27,10 +26,9 @@ class Deck
   end
 
   def card_wave
-    puts "\nStandard French deck..."#; sleep(2)
-    self.undelt.each {|card| puts card; sleep(0.0)}#;sleep(1)
-    puts "Ace is alwsys 11."#; sleep(2)
-    puts "Player always wins with Blackjack."#; sleep(2)
+    puts "\nStandard French deck..."
+    puts "Ace is always 11."
+    puts "Player always wins with Blackjack.\n"
   end
 
   def shuffle!

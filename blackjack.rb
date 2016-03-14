@@ -12,9 +12,7 @@ class BlackJack
                 :betting_box, :player_cash, :player_bet
 
   def initialize
-    self.shoe = Deck.new
-    shoe.card_wave
-    shoe.shuffle!
+    self.shoe = Deck.new.shuffle!
     shoe.card_wave
     self.player_cash = 100
     self.round_num = 0
