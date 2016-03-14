@@ -62,8 +62,8 @@ class BlackJack
 
   def deal(to_player, to_dealer = 0) # deal(num_to_player, num_to_dealer) # assignment branch condition size is too high
     while to_player + to_dealer > 0
-      player_hand << shoe.undelt.shift if to_player > 0
-      dealer_hand << shoe.undelt.shift if to_dealer > 0
+      player_hand << shoe.shift if to_player > 0
+      dealer_hand << shoe.shift if to_dealer > 0
       to_player -= 1 if to_player > 0
       to_dealer -= 1 if to_dealer > 0
     end
