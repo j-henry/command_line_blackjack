@@ -1,7 +1,6 @@
 require './deck'
 require './card'
 
-# Rubocop Offenses Down from 55 to 31
 # For storing core game logic
 # Handles pathing for round advancing and winning
 class BlackJack
@@ -20,15 +19,13 @@ class BlackJack
     self.player_wins = 0
   end
 
-  def round  # assignment branch size and cyclomatic complexity too high, method has too many lines, complexity too high
+  def round
     discard
     puts deal(2, 2)
     check_blackjack
 
-    # I broke player hitting somehow!
-
     while player_score < 21
-      if hit? # Use a guard clause instead
+      if hit?
         deal(1, 0)
         puts "you drew a #{player_hand.last}. Current points #{player_score}"
       else
@@ -106,7 +103,7 @@ class BlackJack
     end
   end
 
-  def player_wins? # too long, too complex
+  def player_wins? 
     if player_score > 21
       dealer_victory
     elsif dealer_score > 21
