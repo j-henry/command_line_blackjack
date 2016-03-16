@@ -1,25 +1,22 @@
 require './deck'
 require './card'
 
+# For storing core game logic
+# Handles pathing for round advancing and winning
 class BlackJack
-
                 # core game instance vars
-  attr_accessor :shoe, :dealer_hand, :player_hand, :round_num, :dealer_wins, :player_wins,
+  attr_accessor :shoe, :dealer_hand, :player_hand, :round_num, :dealer_wins,
+                :player_wins,
                 # betting instance variables
                 :betting_box, :player_cash, :player_bet
 
   def initialize
-    self.shoe = Deck.new; shoe.card_wave
-    shoe.shuffle!;  shoe.card_wave
+    self.shoe = Deck.new.shuffle!
+    shoe.card_wave
     self.player_cash = 100
     self.round_num = 0
     self.dealer_wins = 0
     self.player_wins = 0
-  end
-
-  def shoe_size
-    puts "How many decks?";
-    return STDIN.gets.chomp.to_i
   end
 
   def round
@@ -28,13 +25,13 @@ class BlackJack
     check_blackjack
 
     while player_score < 21
-      if (hit?)
-        deal(1)
+      if hit?
+        deal(1, 0)
         puts "you drew a #{player_hand.last}. Current points #{player_score}"
       else
         break
       end
-      puts "You busted!" if player_score > 21
+      puts 'You busted!' if player_score > 21
     end
 
     if player_score < 21
@@ -46,6 +43,7 @@ class BlackJack
     end
     self.round_num += 1
     player_wins?
+    shoe = Deck.new.shuffle!
     resolution
   end
 
@@ -55,19 +53,15 @@ class BlackJack
     self.betting_box = 0
   end
 
-  def deal(to_player, to_dealer=0) # deal(num_to_player, num_to_dealer)
-    while (to_player + to_dealer) > 0
-      player_hand << shoe.undelt.shift if to_player > 0
-      dealer_hand << shoe.undelt.shift if to_dealer > 0
-      to_player -= 1 if (to_player > 0)
-      to_dealer -= 1 if (to_dealer > 0)
-    end
-    "You have #{player_hand.join(" and ")} (#{player_score})...Dealer shows #{dealer_hand.first}"
+  def deal(to_player, to_dealer = 0)
+      to_player.times {player_hand << shoe.shift if to_player > 0}
+      to_dealer.times {dealer_hand << shoe.shift if to_dealer > 0}
+    "You have #{player_hand.join(' and ')} (#{player_score})...Dealer shows #{dealer_hand.first}"
   end
 
   def hit?
-    print "(h)it or (s)tay? "
-    player_score if gets == "h\n"
+    print '(h)it or (s)tay?'
+    player_score if gets.downcase.chomp == 'h'
   end
 
   def hit
@@ -78,7 +72,7 @@ class BlackJack
   end
 
   def player_score
-    player_hand.reduce(0) { |sum, card| sum += card.value }
+    player_hand.reduce(0) { |a, e| a += e.value }
   end
 
   def dealer_victory
@@ -93,24 +87,23 @@ class BlackJack
   end
 
   def dealer_score
-    dealer_hand.reduce(0) { |sum, card| sum += card.value }
+    dealer_hand.reduce(0) { |a, e| a += e.value }
   end
 
   def check_blackjack
     if player_score == 21
-      puts "Player wins with Blackjack"
-      player_victory
+      puts 'Player wins with Blackjack'
+      player_wins?
+      resolution
     elsif dealer_score == 21
-      puts "Dealer wins with Blackjack"
-      `say "Better luck next time"`
-      dealer_victory
+      puts 'Dealer wins with Blackjack'
+      `say 'Better luck next time'`
+      player_wins?
       resolution
     end
   end
 
-
-  def player_wins?
-
+  def player_wins? 
     if player_score > 21
       dealer_victory
     elsif dealer_score > 21
@@ -131,9 +124,7 @@ class BlackJack
       else
         player_victory
       end
-
     end
-
   end
 
   def resolution
@@ -144,19 +135,16 @@ class BlackJack
     puts "----Hit return for another round. Type exit to quit.----"
     round if gets.chomp == ''
   end
-
 end
 
 game = BlackJack.new
 game.round
 
-
-
-  def bet
-    p "You have #{player_cash}$. How much do you want to bet?"
-    player_bet = gets.chomp.to_i
-    p betting_box
-    p player_bet
-    self.betting_box += player_bet
-    self.player_cash -= player_bet
-  end
+  # def bet
+  #   p "You have #{player_cash}$. How much do you want to bet?"
+  #   player_bet = gets.chomp.to_i
+  #   p betting_box
+  #   p player_bet
+  #   self.betting_box += player_bet
+  #   self.player_cash -= player_bet
+  # end
